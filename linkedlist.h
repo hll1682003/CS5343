@@ -18,6 +18,8 @@ public:
 	void del(node*);
 	void reverse();
 	void traverse();
+	void sort();
+	node *headgetter();
 	~linkedlist();
 
 };

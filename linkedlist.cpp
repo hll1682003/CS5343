@@ -16,7 +16,7 @@ linkedlist::linkedlist() {
 }
 
 void linkedlist::insert(node *input, int pos){
-	if (pos<1 || pos>(listlen + 1)) {
+	if ((pos<1) || (pos>(listlen + 1))) {
 		cout << "Out of range!" << endl;
 		return;
 	}
@@ -30,7 +30,7 @@ void linkedlist::insert(node *input, int pos){
 		}
 		
 }
-	/*else if (pos == listlen + 1) {
+	if (pos == listlen + 1) {
 		node *tmp = head;
 		while (tmp->next) {
 			tmp = tmp->next;
@@ -39,7 +39,7 @@ void linkedlist::insert(node *input, int pos){
 		input->next = NULL;
 		listlen++;
 		return;
-	}*/
+	}
 
 	
 	
@@ -60,7 +60,7 @@ void linkedlist::del(node *input) {
 		head = input->next;
 	}
 	else {
-		while (tmp->next!=input) {
+		while (tmp) {
 			tmp = tmp->next;
 		}
 		tmp->next = input->next;
@@ -77,12 +77,15 @@ void linkedlist::traverse() {
 	}
 	node *tmp = head;
 	int count = 0;
-	while (tmp->next) {
+
+	//I wrote before the while loop condition as (tmp->next), 
+	//leading to one output less
+	while (tmp) {
+		cout << "node" << " " << count+1 << ": " << tmp->val << endl;
 		tmp = tmp->next;
 		count++;
-		cout << "node" << " " << count << ": " << tmp->val << endl;
 	}
-	cout << "There're " << listlen << " nodes in this list" << endl;
+	cout << "There're " << listlen << " nodes in this list" << endl << endl;
 
 }
 
@@ -105,4 +108,62 @@ void linkedlist::reverse() {
 	
 	//previously wrong as head = tmp1;
 	head = tmp2;
+	cout << "Now the list is reversed: " << endl;
 }
+
+node *linkedlist::headgetter() {
+	return head;
+}
+void linkedlist::sort() {
+	node *smallest=head;
+	node *current=smallest;
+	node *tmp=head;
+	node *beforetmp = head;
+	node *beforesmall = head;
+	node *aftersmall = head;
+	for (node *i = head; (i&&i->next) ; i=i->next) {
+
+		aftersmall = smallest->next;
+		for (node *j = i; (j&&j->next); j=j->next) {
+			if (current->val < smallest->val) {
+				tmp = current;
+			}
+			current = current->next;
+		}
+		if (tmp != smallest) {
+			while (beforetmp->next != tmp) {
+				beforetmp = beforetmp->next;
+			}
+
+
+
+
+			if (i != head) {
+				while (beforesmall->next != smallest) {
+					beforesmall = beforesmall->next;
+				}
+			}
+
+			if (i == head) {
+				smallest->next = tmp->next;
+				tmp->next = aftersmall;
+				beforetmp->next = smallest;
+				head = tmp;
+			}
+			else {
+				smallest->next = tmp->next;
+				tmp->next = aftersmall;
+				beforesmall->next = tmp;
+				beforetmp->next = smallest;
+			}
+		}
+
+
+		smallest = tmp->next;
+		current = smallest;
+		tmp = smallest;
+		beforetmp = smallest;
+		beforesmall = head;
+		aftersmall = smallest;
+	}
+}//function ends
