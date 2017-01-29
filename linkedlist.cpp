@@ -115,55 +115,53 @@ node *linkedlist::headgetter() {
 	return head;
 }
 void linkedlist::sort() {
-	node *smallest=head;
-	node *current=smallest;
+	//node *smallest=head;
+	//node *current=smallest;
 	node *tmp=head;
 	node *beforetmp = head;
 	node *beforesmall = head;
 	node *aftersmall = head;
-	for (node *i = head; (i&&i->next) ; i=i->next) {
+	node *i,*j = head;
+	for (i = head; (i) ; i=i->next) {
 
-		aftersmall = smallest->next;
-		for (node *j = i; (j&&j->next); j=j->next) {
-			if (current->val < smallest->val) {
-				tmp = current;
+		aftersmall = i->next;
+		for (j = i->next; (j); j=j->next) {
+			if (j->val < i->val) {
+				tmp = j;
 			}
-			current = current->next;
+			//current = current->next;
 		}
-		if (tmp != smallest) {
+		if (tmp != i) {
 			while (beforetmp->next != tmp) {
 				beforetmp = beforetmp->next;
 			}
 
 
-
-
-			if (i != head) {
-				while (beforesmall->next != smallest) {
-					beforesmall = beforesmall->next;
-				}
-			}
-
 			if (i == head) {
-				smallest->next = tmp->next;
+				i->next = tmp->next;
 				tmp->next = aftersmall;
-				beforetmp->next = smallest;
+				beforetmp->next = i;
 				head = tmp;
 			}
+
 			else {
-				smallest->next = tmp->next;
+				while (beforesmall->next != i) {
+					beforesmall = beforesmall->next;
+				}
+				i->next = tmp->next;
 				tmp->next = aftersmall;
 				beforesmall->next = tmp;
-				beforetmp->next = smallest;
+				beforetmp->next = i;
 			}
+
 		}
 
 
-		smallest = tmp->next;
-		current = smallest;
-		tmp = smallest;
-		beforetmp = smallest;
+		i = tmp->next;
+		j = i;
+		tmp = i;
+		beforetmp = i;
 		beforesmall = head;
-		aftersmall = smallest;
+		aftersmall = i;
 	}
 }//function ends
