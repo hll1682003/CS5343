@@ -115,18 +115,22 @@ node *linkedlist::headgetter() {
 	return head;
 }
 void linkedlist::sort() {
+	const node *original = head;
 	node *tmp=head;
 	node *beforetmp = head;
 	node *beforesmall = head;
 	node *aftersmall = head;
 	node *i, *j;
-	for (i = head; i!=NULL ; i=i->next) {
+	int compare = 0;
+	for (i = head; i->next!=NULL ; i=i->next) {
 
 		aftersmall = i->next;
-		for (j = i->next; j!=NULL; j=j->next) {
-			if (j->val < i->val) {
+		for (j = i->next; j->next!=NULL; j=j->next) {
+			if (j->val < compare) {
+				compare = j -> val;
 				tmp = j;
 			}
+
 		}
 		if (tmp != i) {
 			while (beforetmp->next != tmp) {
@@ -134,34 +138,35 @@ void linkedlist::sort() {
 			}
 
 
-
-
-			if (i != head) {
-				while (beforesmall->next != i) {
-					beforesmall = beforesmall->next;
-				}
-			}
-
-			if (i == head) {
+if (i == original) {
 				i->next = tmp->next;
 				tmp->next = aftersmall;
 				beforetmp->next = i;
 				head = tmp;
 			}
-			else {
-				i->next = tmp->next;
-				tmp->next = aftersmall;
-				beforesmall->next = tmp;
-				beforetmp->next = i;
-			}
+else {
+
+		while (beforesmall->next != i) {
+			beforesmall = beforesmall->next;
 		}
 
 
+
+
+		i->next = tmp->next;
+		tmp->next = aftersmall;
+		beforesmall->next = tmp;
+		beforetmp->next = i;
+
+	}
+			}
+
+
 		i = tmp->next;
-		j = i;
-		tmp = i;
-		beforetmp = i;
+		j = i->next;
+		tmp = j;
+		beforetmp = head;
 		beforesmall = head;
-		aftersmall = i;
+		compare = i->val;
 	}
 }//function ends
