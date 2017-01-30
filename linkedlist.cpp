@@ -115,14 +115,19 @@ node *linkedlist::headgetter() {
 	return head;
 }
 void linkedlist::sort() {
-	const node *origin = head;
+	int count = 0;
 	int smallest = 0;
 	node *i, *tmp=head;
 	node *i_next = head;
 	node *i_before = head;
 	node *beforetmp = head;
+	if (!head) {
+		cout << "the list is empty!" << endl;
+		return;
+	}
 
 	for (i = head; i; i = i->next) {
+		count++;
 		tmp = i;
 		smallest = i->val;
 		i_next = i->next;
@@ -138,7 +143,7 @@ void linkedlist::sort() {
 		if (tmp != i) {
 			//when it's the first node to be processed,
 			//modification on head pointer may occur
-			if (i == origin) {
+			if (count == 1) {
 				if (i->next == tmp) {
 					i->next = tmp->next;
 					tmp->next = i;
@@ -184,9 +189,10 @@ void linkedlist::sort() {
 			
 			}
 
-		
+			i = tmp;
 		}
-		i = tmp;
+
+		
 
 	}
 
