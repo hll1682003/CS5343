@@ -115,58 +115,81 @@ node *linkedlist::headgetter() {
 	return head;
 }
 void linkedlist::sort() {
-	const node *original = head;
-	node *tmp=head;
+	const node *origin = head;
+	int smallest = 0;
+	node *i, *tmp=head;
+	node *i_next = head;
+	node *i_before = head;
 	node *beforetmp = head;
-	node *beforesmall = head;
-	node *aftersmall = head;
-	node *i, *j;
-	int compare = 0;
-	for (i = head; i->next!=NULL ; i=i->next) {
 
-		aftersmall = i->next;
-		for (j = i->next; j->next!=NULL; j=j->next) {
-			if (j->val < compare) {
-				compare = j -> val;
+	for (i = head; i; i = i->next) {
+		tmp = i;
+		smallest = i->val;
+		i_next = i->next;
+		i_before = head;
+		beforetmp = head;
+		for (node *j = i; j; j = j->next) {
+			if (smallest > j->val) {
+				smallest = j->val;
 				tmp = j;
 			}
-
 		}
+
 		if (tmp != i) {
-			while (beforetmp->next != tmp) {
-				beforetmp = beforetmp->next;
+			//when it's the first node to be processed,
+			//modification on head pointer may occur
+			if (i == origin) {
+				if (i->next == tmp) {
+					i->next = tmp->next;
+					tmp->next = i;
+					head = tmp;
+				}
+				else {
+					while (beforetmp->next != tmp) {
+						beforetmp = beforetmp->next;
+					}
+					i->next = tmp->next;
+					tmp->next = i_next;
+					beforetmp->next = i;
+					head = tmp;
+				}
+			}
+			
+			//when they're nodes other than the first one in the linked list
+			else {
+				
+				while (i_before->next != i) {
+					i_before = i_before->next;
+				}
+				
+				//if the nth node and the smallest node are adjacent to each other
+				if (i->next == tmp) {
+					i_before->next = tmp;
+					i->next = tmp->next;
+					tmp->next = i;
+				}
+
+				//if the two nodes are not adjacent to each other
+				else {
+					while (beforetmp->next != tmp) {
+						beforetmp = beforetmp->next;
+					}
+					i_before->next = tmp;
+					i->next = tmp->next;
+					tmp->next = i->next;
+					beforetmp->next = i;
+				
+				}
+			
+			
 			}
 
-
-if (i == original) {
-				i->next = tmp->next;
-				tmp->next = aftersmall;
-				beforetmp->next = i;
-				head = tmp;
-			}
-else {
-
-		while (beforesmall->next != i) {
-			beforesmall = beforesmall->next;
+		
 		}
-
-
-
-
-		i->next = tmp->next;
-		tmp->next = aftersmall;
-		beforesmall->next = tmp;
-		beforetmp->next = i;
+		i = tmp;
 
 	}
-			}
 
 
-		i = tmp->next;
-		j = i->next;
-		tmp = j;
-		beforetmp = head;
-		beforesmall = head;
-		compare = i->val;
-	}
+	
 }//function ends
