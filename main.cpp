@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
 	//list1.reverse();
 	list1.traverse();
 	list1.sort();
+	list1.traverse();
 	//list1.traverse();
 
 	/*

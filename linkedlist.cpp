@@ -122,8 +122,11 @@ void linkedlist::sort() {
 	int valbuf;
 	node* swapbuf = NULL;
 	while (i) {
+		node *i_before=head;
+		node *i_after=head;
+		node *tmp_before = head;
 		tmp = i;
-		valbuf = i->val;
+		valbuf = tmp->val;
 		j = i->next;
 		while (j) {
 
@@ -133,10 +136,41 @@ void linkedlist::sort() {
 			}
 			j=j->next;
 		}
-		cout << valbuf << endl;
+		//do the swap
+		if (tmp == i) {
+			i = i->next;
+		}
+		else {
+			if (i == head) {
+				head = tmp;
+				while (tmp_before->next != tmp) {
+					tmp_before = tmp_before->next;
+				}
+				tmp_before->next = i;
+				i->next = tmp->next;
+				tmp->next = i;
 
+			}
+			else {
+				while (i_before->next != i) {
+					i_before = i_before->next;
+				}
+				i_after = i->next;
+				while (tmp_before->next != tmp) {
+					tmp_before = tmp_before->next;
+				}
+				i_before->next = tmp;
+				tmp_before->next = i;
+				i->next = tmp->next;
+				tmp->next = i_after;
+				swapbuf = i;
+				i = tmp;
+				tmp = swapbuf;
+				i = i->next;
+				
 
-		i=i->next;
+			}
+		}
 	}
 	
 }//function ends
