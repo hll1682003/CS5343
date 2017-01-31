@@ -15,11 +15,11 @@ int main(int argc, char *argv[]) {
 		list1.insert(tmp, i);
 
 	}
-	list1.traverse();
-	list1.reverse();
+	//list1.traverse();
+	//list1.reverse();
 	list1.traverse();
 	list1.sort();
-	list1.traverse();
+	//list1.traverse();
 
 	/*
 	tmp = list1.headgetter();

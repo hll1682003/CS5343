@@ -115,87 +115,28 @@ node *linkedlist::headgetter() {
 	return head;
 }
 void linkedlist::sort() {
-	int count = 0;
-	int smallest = 0;
-	node *i, *tmp=head;
-	node *i_next = head;
-	node *i_before = head;
-	node *beforetmp = head;
-	if (!head) {
-		cout << "the list is empty!" << endl;
-		return;
-	}
 
-	for (i = head; i; i = i->next) {
-		count++;
+	node* i = head;
+	node* j = head->next;
+	node* tmp;
+	int valbuf;
+	node* swapbuf = NULL;
+	while (i) {
 		tmp = i;
-		smallest = i->val;
-		i_next = i->next;
-		i_before = head;
-		beforetmp = head;
-		for (node *j = i; j; j = j->next) {
-			if (smallest > j->val) {
-				smallest = j->val;
+		valbuf = i->val;
+		j = i->next;
+		while (j) {
+
+			if (valbuf>j->val) {
 				tmp = j;
+				valbuf = j ->val;
 			}
+			j=j->next;
 		}
+		cout << valbuf << endl;
 
-		if (tmp != i) {
-			//when it's the first node to be processed,
-			//modification on head pointer may occur
-			if (count == 1) {
-				if (i->next == tmp) {
-					i->next = tmp->next;
-					tmp->next = i;
-					head = tmp;
-				}
-				else {
-					while (beforetmp->next != tmp) {
-						beforetmp = beforetmp->next;
-					}
-					i->next = tmp->next;
-					tmp->next = i_next;
-					beforetmp->next = i;
-					head = tmp;
-				}
-			}
-			
-			//when they're nodes other than the first one in the linked list
-			else {
-				
-				while (i_before->next != i) {
-					i_before = i_before->next;
-				}
-				
-				//if the nth node and the smallest node are adjacent to each other
-				if (i->next == tmp) {
-					i_before->next = tmp;
-					i->next = tmp->next;
-					tmp->next = i;
-				}
 
-				//if the two nodes are not adjacent to each other
-				else {
-					while (beforetmp->next != tmp) {
-						beforetmp = beforetmp->next;
-					}
-					i_before->next = tmp;
-					i->next = tmp->next;
-					tmp->next = i->next;
-					beforetmp->next = i;
-				
-				}
-			
-			
-			}
-
-			i = tmp;
-		}
-
-		
-
+		i=i->next;
 	}
-
-
 	
 }//function ends
