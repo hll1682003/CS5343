@@ -1,0 +1,15 @@
+void selectionSort(int[] array, int startIndex)
+{
+    if ( startIndex >= array.length - 1 )
+        return;
+    int minIndex = startIndex;
+    for ( int index = startIndex + 1; index < array.length; index++ )
+    {
+        if (array[index] < array[minIndex] )
+            minIndex = index;
+    }
+    int temp = array[startIndex];
+    array[startIndex] = array[minIndex];
+    array[minIndex] = temp;
+    selectionSort(array, startIndex + 1);
+}
