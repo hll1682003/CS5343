@@ -15,42 +15,25 @@ linkedlist::linkedlist() {
 	head = NULL;
 }
 
-void linkedlist::insert(node *input, int pos){
-	if ((pos<1) || (pos>(listlen + 1))) {
-		cout << "Out of range!" << endl;
-		return;
-	}
-
+void linkedlist::append(node *input){
 	if (head== NULL) {
-		if (pos == 1) {
 			head = input;
 			input->next = NULL;
 			listlen++;
 			return;
-		}
 		
 }
-	if (pos == listlen + 1) {
-		node *tmp = head;
+	else{
+		node*tmp = head;
+		input->next = NULL;
 		while (tmp->next) {
 			tmp = tmp->next;
 		}
 		tmp->next = input;
-		input->next = NULL;
 		listlen++;
 		return;
 	}
 
-	
-	
-
-	node *tmp = head;
-	for (int i = 1; i < pos; i++) {
-		tmp = tmp->next;
-	}
-	input->next=tmp->next;
-	tmp->next = input;
-	listlen++;
 
 }
 
@@ -114,63 +97,54 @@ void linkedlist::reverse() {
 node *linkedlist::headgetter() {
 	return head;
 }
+
 void linkedlist::sort() {
-
-	node* i = head;
-	node* j = head->next;
-	node* tmp;
-	int valbuf;
-	node* swapbuf = NULL;
-	while (i) {
-		node *i_before=head;
-		node *i_after=head;
-		node *tmp_before = head;
-		tmp = i;
-		valbuf = tmp->val;
-		j = i->next;
-		while (j) {
-
-			if (valbuf>j->val) {
-				tmp = j;
-				valbuf = j ->val;
+	node *traverse_ = head;
+	node *default_;
+	node *min;
+	node *compare;
+	while (traverse_ != NULL) {
+		default_ = traverse_;
+		//The minimal node is always set to traverse_ at first
+		min = default_;
+		compare = default_->next;
+		while (compare != NULL) {
+			if (min->val > compare->val) {
+				min = compare;
 			}
-			j=j->next;
+			compare = compare->next;
 		}
-		//do the swap
-		if (tmp == i) {
-			i = i->next;
-		}
-		else {
-			if (i == head) {
-				head = tmp;
-				while (tmp_before->next != tmp) {
-					tmp_before = tmp_before->next;
-				}
-				tmp_before->next = i;
-				i->next = tmp->next;
-				tmp->next = i;
 
-			}
-			else {
-				while (i_before->next != i) {
-					i_before = i_before->next;
-				}
-				i_after = i->next;
-				while (tmp_before->next != tmp) {
-					tmp_before = tmp_before->next;
-				}
-				i_before->next = tmp;
-				tmp_before->next = i;
-				i->next = tmp->next;
-				tmp->next = i_after;
-				swapbuf = i;
-				i = tmp;
-				tmp = swapbuf;
-				i = i->next;
-				
-
-			}
-		}
-	}
+		swap(default_, min);
+		traverse_ = min->next;
 	
+	}
+	cout << "Now the list has been sorted." << endl;
 }//function ends
+
+void linkedlist::swap(node *a, node *b) {
+		//Do not save a->next instead
+		node *b_next = b->next;
+		node *a_before = head;
+		node *b_before = head;
+		while (b_before->next != b) {
+			b_before = b_before->next;
+		}
+		if (a != head&&b != head) {
+			while (a_before->next != a) {
+				a_before = a_before->next;
+			}
+			
+			a_before->next = b;
+			b_before->next = a;
+			b->next = a->next;
+			a->next = b_next;
+		}
+		else if (a == head&&b != head) {
+			b_before->next = a;
+			b->next = a->next;
+			a->next = b_next;
+			head = b;
+		}
+	
+}

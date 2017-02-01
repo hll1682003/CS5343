@@ -7,16 +7,16 @@ int main(int argc, char *argv[]) {
 	srand((unsigned int)time(NULL));
 	linkedlist list1;
 	node *tmp, *tmp1 = NULL;
-	int num[10] = {3,4,3,1,4,7,1,4,8,7};
+	//int num[10] = {3,4,3,1,4,7,1,4,8,7};
 	for (int i = 1; i <= 10; i++) {
 		tmp = new node;
-		tmp->val = num[i-1];
-		//tmp->val = random();
-		list1.insert(tmp, i);
+		//tmp->val = num[i-1];
+		tmp->val = random();
+		list1.append(tmp);
 
 	}
-	//list1.traverse();
-	//list1.reverse();
+	list1.traverse();
+	list1.reverse();
 	list1.traverse();
 	list1.sort();
 	list1.traverse();
@@ -36,5 +36,6 @@ int main(int argc, char *argv[]) {
 
 int random() {
 	
-	return (rand() % 10 + 1);
+	return (rand() + 1) % 100;
+		//(rand() % 10 + 1);
 }

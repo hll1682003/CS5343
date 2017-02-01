@@ -14,10 +14,11 @@ private:
 
 public:
 	linkedlist();
-	void insert(node*, int);
+	void append(node*);
 	void del(node*);
 	void reverse();
 	void traverse();
+	void swap(node *a, node *b);
 	void sort();
 	node *headgetter();
 	~linkedlist();
