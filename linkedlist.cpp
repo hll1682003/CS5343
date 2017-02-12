@@ -15,42 +15,25 @@ linkedlist::linkedlist() {
 	head = NULL;
 }
 
-void linkedlist::insert(node *input, int pos){
-	if ((pos<1) || (pos>(listlen + 1))) {
-		cout << "Out of range!" << endl;
-		return;
-	}
-
+void linkedlist::append(node *input){
 	if (head== NULL) {
-		if (pos == 1) {
 			head = input;
 			input->next = NULL;
 			listlen++;
 			return;
-		}
 		
 }
-	if (pos == listlen + 1) {
-		node *tmp = head;
+	else{
+		node*tmp = head;
+		input->next = NULL;
 		while (tmp->next) {
 			tmp = tmp->next;
 		}
 		tmp->next = input;
-		input->next = NULL;
 		listlen++;
 		return;
 	}
 
-	
-	
-
-	node *tmp = head;
-	for (int i = 1; i < pos; i++) {
-		tmp = tmp->next;
-	}
-	input->next=tmp->next;
-	tmp->next = input;
-	listlen++;
 
 }
 
@@ -114,88 +97,54 @@ void linkedlist::reverse() {
 node *linkedlist::headgetter() {
 	return head;
 }
+
 void linkedlist::sort() {
-	int count = 0;
-	int smallest = 0;
-	node *i, *tmp=head;
-	node *i_next = head;
-	node *i_before = head;
-	node *beforetmp = head;
-	if (!head) {
-		cout << "the list is empty!" << endl;
-		return;
-	}
-
-	for (i = head; i; i = i->next) {
-		count++;
-		tmp = i;
-		smallest = i->val;
-		i_next = i->next;
-		i_before = head;
-		beforetmp = head;
-		for (node *j = i; j; j = j->next) {
-			if (smallest > j->val) {
-				smallest = j->val;
-				tmp = j;
+	node *traverse_ = head;
+	node *default_;
+	node *min;
+	node *compare;
+	while (traverse_ != NULL) {
+		default_ = traverse_;
+		//The minimal node is always set to traverse_ at first
+		min = default_;
+		compare = default_->next;
+		while (compare != NULL) {
+			if (min->val > compare->val) {
+				min = compare;
 			}
+			compare = compare->next;
 		}
 
-		if (tmp != i) {
-			//when it's the first node to be processed,
-			//modification on head pointer may occur
-			if (count == 1) {
-				if (i->next == tmp) {
-					i->next = tmp->next;
-					tmp->next = i;
-					head = tmp;
-				}
-				else {
-					while (beforetmp->next != tmp) {
-						beforetmp = beforetmp->next;
-					}
-					i->next = tmp->next;
-					tmp->next = i_next;
-					beforetmp->next = i;
-					head = tmp;
-				}
-			}
-			
-			//when they're nodes other than the first one in the linked list
-			else {
-				
-				while (i_before->next != i) {
-					i_before = i_before->next;
-				}
-				
-				//if the nth node and the smallest node are adjacent to each other
-				if (i->next == tmp) {
-					i_before->next = tmp;
-					i->next = tmp->next;
-					tmp->next = i;
-				}
-
-				//if the two nodes are not adjacent to each other
-				else {
-					while (beforetmp->next != tmp) {
-						beforetmp = beforetmp->next;
-					}
-					i_before->next = tmp;
-					i->next = tmp->next;
-					tmp->next = i->next;
-					beforetmp->next = i;
-				
-				}
-			
-			
-			}
-
-			i = tmp;
-		}
-
-		
-
-	}
-
-
+		swap(default_, min);
+		traverse_ = min->next;
 	
+	}
+	cout << "Now the list has been sorted." << endl;
 }//function ends
+
+void linkedlist::swap(node *a, node *b) {
+		//Do not save a->next instead
+		node *b_next = b->next;
+		node *a_before = head;
+		node *b_before = head;
+		while (b_before->next != b) {
+			b_before = b_before->next;
+		}
+		if (a != head&&b != head) {
+			while (a_before->next != a) {
+				a_before = a_before->next;
+			}
+			
+			a_before->next = b;
+			b_before->next = a;
+			b->next = a->next;
+			a->next = b_next;
+		}
+		else if (a == head&&b != head) {
+			b_before->next = a;
+			b->next = a->next;
+			a->next = b_next;
+			head = b;
+		}
+	
+}
