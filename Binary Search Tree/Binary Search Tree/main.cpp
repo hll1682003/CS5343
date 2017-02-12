@@ -3,10 +3,11 @@
 #include<iostream>
 using namespace std;
 int random();
+void nonleafsuccdel(BST &a, BSTnode *b);
 int main(int argc, char **argv) {	
 	srand((unsigned int)time(NULL));
 	BST tree1;
-	int searchitem;
+	int searchitem=0;
 	cout << "Now insert 15 random intergers between 1 and 100: " << endl;
 	
 	for (int i = 0; i < 15; i++) {
@@ -32,27 +33,57 @@ int main(int argc, char **argv) {
 	BSTnode *tmp;
 	tmp=tree1.search(tree1.rootgetter(),searchitem);
 	cout << "a random search item is: " << searchitem << endl<<endl;
-	cout <<"the search result: "<< tmp->val<< endl<<endl;
+	if (tmp != NULL) {
+		cout << "the search result: " << tmp->val << endl << endl;
+	}
+	else {
+		cout << "can't find it";
+	}
 	tmp = tree1.max(tree1.rootgetter());
 	cout << "now a leaf node whose value is " << tmp->val << " is to be deleted " << endl;
 	tree1.del(tmp->val);
 	cout << "Now show the inorder traverse of the BST after deletion" << endl;
 	tree1.inorder(tree1.rootgetter());
 	
-	cout << endl << "Now the root node ("<< tree1.rootgetter()->val<< ") is to be deleted ( which means non-leaf)";
+	cout << "Now the root node ("<< tree1.rootgetter()->val<< ") is to be deleted (which means non-leaf)";
 	cout<<"and it will be replaced by its successor."<<"" << endl;
 	cout << "Now show the inorder traverse of the BST after deletion" << endl;
 	tree1.del(tree1.rootgetter()->val);
 	tree1.inorder(tree1.rootgetter());
 
-	cout << endl << "Now the root node (" << tree1.rootgetter()->val << ") is to be deleted again";
-	cout << " and it will be replaced by its successor."<< endl;
-	cout << "Now show the inorder traverse of the BST after deletion" << endl;
-	tree1.del(tree1.rootgetter()->val);
-	tree1.inorder(tree1.rootgetter());
+	
+	
 
+	//find a non-leaf node of which the successor is not leaf to delete
+	nonleafsuccdel(tree1, tree1.min(tree1.rootgetter()));
+	
+	cout << "Now show the inorder traverse of the BST after deletion" << endl;
+	tree1.inorder(tree1.rootgetter());
+	cin.get();
+	return 0;
 }
 
 int random() {
 	return (rand() % 100 + 1);
+}
+
+void nonleafsuccdel(BST &a, BSTnode *b) {
+	if (b == NULL) { cout << "failed!" << endl; return; }
+	if (a.max(a.rootgetter())->parent->parent != NULL) {
+		cout << endl << "Now the node (" << a.max(a.rootgetter())->parent->parent->val << ") is to be deleted ";
+		cout << " and it will be replaced by its successor ("<< a.max(a.rootgetter())->parent->val <<")(non-leaf)." << endl;
+		a.del(a.max(a.rootgetter())->parent->parent->val);
+		return;
+	}
+	else {
+		if (b->parent->rchild->lchild == NULL ||b->parent->rchild->rchild != NULL) {
+			cout << endl << "Now the node (" << b->parent->val << ") is to be deleted ";
+			cout << " and it will be replaced by its successor (" << b->parent->rchild->val << ")(non-leaf)." << endl;
+			a.del(b->parent->val);
+			return;
+		}
+		else {
+			nonleafsuccdel(a, b->parent);
+		}
+	}
 }

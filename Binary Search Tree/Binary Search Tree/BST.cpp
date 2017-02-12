@@ -27,7 +27,7 @@ bool BST::insert(BSTnode *rt, int a) {
 		return true;
 	}
 
-	else if (a == rt->val) { cout << a << " has a duplicate, so one more random number is generated to make it 15" << endl; return false; }
+	else if (a == rt->val) { cout <<"Because "<< a << " has a duplicate, so one more random number is generated to make it 15" << endl; return false; }
 	else if (a > rt->val) {
 		if (rt->rchild == NULL) {
 			rt->rchild = new BSTnode;

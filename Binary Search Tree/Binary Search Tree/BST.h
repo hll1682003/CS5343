@@ -18,6 +18,7 @@ public:
 	BSTnode* search(BSTnode*,int);
 	void del(int);
 	BSTnode* rootgetter();
+	void rootsetter(BSTnode*);
 	BSTnode* min(BSTnode*);
 	BSTnode* max(BSTnode*);
 };
