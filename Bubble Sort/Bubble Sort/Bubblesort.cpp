@@ -14,30 +14,30 @@ int main(int argc, char **argv) {
 		cout << tmp << " ";
 	}
 	cout << endl;
-
-
-
-		for (int i = 15; i >= 0; i--) {
-			for (int j = 0; j < i - 1; j++) {
-				if (a[j] > a[j + 1]) {
-					tmp = a[j];
-					a[j] = a[j + 1];
-					a[j + 1] = tmp;
-				}
-
+	bool swap = true;
+	int j = 0;
+	int temp = 0;
+	while (swap) {
+		swap = false;
+		j++;
+		for (int k = 0; k < 15 - j; k++) {
+			if (a[k+1] < a[k]) {
+				temp = a[k];
+				a[k] = a[k + 1];
+				a[k + 1] = temp;
+				swap = true;
 			}
-			if (-(i - 16) == 16) {
-				cout << "The sorted array is: " << endl;
-			}
-			else {
-				cout << "Pass " << -(i - 16) << ":" << endl;
-			}
-			for (int k = 0; k < 15; k++) {
-				cout << a[k] << " ";
-			}
-			cout << endl;
-
 		}
+		cout << "This is the " << j << "th pass:" << endl;
+		for (int l : a) {
+			cout << l<<" ";
+		}
+		cout << endl;
+	}
+	cout << "done." << endl;
+
+
+		
 		cin.get();
 		return 0;
 }
