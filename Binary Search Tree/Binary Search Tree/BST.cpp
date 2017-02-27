@@ -4,10 +4,7 @@
 using namespace std;
 BSTnode::BSTnode() :lchild(NULL),rchild(NULL),parent(NULL),val(0){}
 BSTnode* BST::search(BSTnode* root,int a){
-	if (root == NULL) {
-		return NULL;
-}
-	if (root->val == a) {
+	if (root==NULL||root->val == a) {
 		return root;
 	}
 	else if (root->val > a) {
@@ -138,10 +135,7 @@ void BST::del(int a) {
 				tmp->parent->rchild = tmp->lchild;
 			}
 		}
-		//tmp->lchild = NULL;
-		//tmp->rchild = NULL;
-		//tmp->parent = NULL;
-		//delete(tmp);
+
 	}
 	//condition 3: if true, deletion when the node have two children
 	//This implementation will use the successor of the deletion node for replacement
@@ -153,10 +147,7 @@ void BST::del(int a) {
 			tmp->rchild = succ->rchild;
 			//This IF wrapping was added after debugging. Don't forget to handle the parent pointer of the successor when it has no right child
 			if (succ->rchild != NULL) { succ->rchild->parent = succ->parent; }
-			//succ->lchild = NULL;
-			//succ->rchild = NULL;
-			//succ->parent = NULL;
-			//delete(succ);
+
 		}
 		//condition 3b: the successor node has no child
 		else if ((succ->lchild == NULL) && (succ->rchild == NULL)) {
@@ -170,10 +161,7 @@ void BST::del(int a) {
 			tmp->val = succ->val;
 			succ->parent->lchild = succ->rchild;
 			succ->rchild->parent = succ->parent;
-			//succ->parent = NULL;
-			//succ->lchild = NULL;
-			//succ->rchild = NULL;
-			//delete(succ);
+
 		}
 		cout << "The successor of deletion node is: " << succ->val << endl;
 

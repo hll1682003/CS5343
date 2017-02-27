@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
 		cout << "the search result: " << tmp->val << endl << endl;
 	}
 	else {
-		cout << "can't find it";
+		cout << "can't find it"<<endl;
 	}
 	tmp = tree1.max(tree1.rootgetter());
 	cout << "now a leaf node whose value is " << tmp->val << " is to be deleted " << endl;
