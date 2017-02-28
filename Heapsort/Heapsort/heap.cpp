@@ -1,106 +1,67 @@
-#include "heap.h"
+#include <iostream>
 #include<time.h>
-#include<iostream>
 #include<algorithm>
 using namespace std;
-int random();
-
-void heap::generate() {
-	srand((unsigned int)time(NULL));
-	
-	int temp = random();
-	int rep_check;
-	heapsize = sizeof(arry) / sizeof(arry[0])-1;
-	//arry[0] stores the size of heap
-	arry[0] = sizeof(arry) / sizeof(arry[0])-1;
-	for (int i = 1; i < (sizeof(arry)/sizeof(arry[1]));i++) {
-		rep_check = temp;
-		arry[i] = temp;
-		temp = random();
-		//exclude repetitive numbers
-		if (rep_check == temp) { i--; }
-		
-	}
-	
-
-}
-
-void heap::heapify() {
-	for (int i = 2; i <= heapsize; i++) {
-		for (int j = i; j > 1; j /= 2) {
-			if (arry[j] > arry[j / 2]) {
-				swap(arry[j], arry[j / 2]);
-			}
-		}
-	}
-
-
-}
-
-void heap::heapsort() {
-	int currentsize = heapsize;
-	swap(arry[currentsize], arry[1]);
-	currentsize--;
-	for (currentsize; currentsize > 0; currentsize--) {
-		for (int j = 1; j <= currentsize; j *= 2) {}
-	}
-}
-/*void heap::heapify() {
-	int lastparent = (sizeof(arry) / sizeof(arry[0])) / 2-1;
-	int quarterparent = lastparent / 2;
-	int temp;
-	int flag;
-	for (lastparent; lastparent >= 1; lastparent--) {
-		flag = -1;
-		//case one: if both the children nodes are greater than the parent, swap the parent with the bigger one
-		if ((arry[lastparent * 2] > arry[lastparent])&&(arry[lastparent*2+1]>arry[lastparent])) {
-			if (arry[lastparent * 2] >= arry[lastparent * 2+1]) {
-				temp = arry[lastparent * 2];
-				arry[lastparent * 2] = arry[lastparent];
-				arry[lastparent] = temp;
-				flag= lastparent * 2;
-			}
-			else {
-				temp = arry[lastparent * 2 + 1];
-				arry[lastparent * 2+1] = arry[lastparent];
-				arry[lastparent] = temp;
-				flag = lastparent * 2 + 1;
-			}
-
-		}
-		//case two: if only one of children nodes are greater than the parent, just swap the parent with that node
-		else if ((arry[lastparent * 2] > arry[lastparent]) || (arry[lastparent * 2 + 1] > arry[lastparent])) {
-			if (arry[lastparent * 2] > arry[lastparent]) {
-				temp = arry[lastparent * 2];
-				arry[lastparent * 2] = arry[lastparent];
-				arry[lastparent] = temp;
-				flag = lastparent * 2;
-			}
-			else {
-				temp = arry[lastparent * 2 + 1];
-				arry[lastparent * 2 + 1] = arry[lastparent];
-				arry[lastparent] = temp;
-				flag = lastparent * 2+1;
-			}
-		}
-		while(flag< (sizeof(arry) / sizeof(arry[0])-1)){
-			if (max(flag, flag * 2, (flag * 2 + 1)) != flag) {
-				swap(arry[flag], arry[max(flag, flag * 2, flag * 2 + 1)]);
-			}
-			flag *= 2;
-		}
-
-	}
-	
-}*/
-void heap::print_heap() {
-	for (int i : arry) {
-		cout << i<<" ";
-	}
-	cout << endl;
-
-}
-
 int random() {
 	return (rand() % 100 + 1);
+}
+
+//compare one node with its two children, if any of its children is larger than it, swap them
+//and recursively call this function to see if the modified heap stil meet the heap property
+void percolatedown(int a[], int arraysize, int node) {
+	int largest = node;
+	//the first element is saved in position 1, so the lchild is simply node*2, rchild is lchild+1
+	int lchild = node * 2;
+	int rchild = lchild + 1;
+	if (lchild <= arraysize&&a[largest] < a[lchild]) {
+		largest = lchild;
+	}
+	if (rchild <= arraysize && a[largest] < a[rchild]) {
+		largest = rchild;
+	}
+	if (largest != node) {
+		swap(a[largest], a[node]);
+		//recursive call
+		percolatedown(a, arraysize, largest);
+	}
+}
+//to print the whole heap
+void heapprint(int a[], int size) {
+	for (int i = 1; i <= size; i++) {
+		cout << a[i] << " ";
+	}
+	cout << endl;
+}
+void heapsort(int a[], int size) {
+	//heapify algorithm is implemented in the first for-loop
+	//start with size/2 because the percolatedown() function is comparing a parent with its two children
+	//and we need to start from the last internal node in the heap i.e. a[size/2]
+	for (int i = size / 2; i >= 1; i--) {
+		percolatedown(a, size, i);
+	}
+	cout << "Here's heapified heap: " << endl;
+	heapprint(a, size);
+
+	for (int j = size; j > 0; j--) {
+		swap(a[1], a[j]);
+		percolatedown(a, j - 1, 1);
+	}
+
+}
+
+
+
+int main() {
+	int arr[16];
+	//record the heap size in arr[0]
+	arr[0] = sizeof(arr) / sizeof(arr[0]) - 1;
+	srand((unsigned int)time(NULL));
+	for (int i = 1; i <= arr[0]; i++) {
+		arr[i] = random();
+	}
+	cout << "The original array is: " << endl;
+	heapprint(arr, arr[0]);
+	heapsort(arr, arr[0]);
+	cout << "The sorted heap is: " << endl;
+	heapprint(arr, arr[0]);
 }
